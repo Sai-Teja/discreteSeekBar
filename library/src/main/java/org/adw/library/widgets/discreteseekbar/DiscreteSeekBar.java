@@ -177,7 +177,8 @@ public class DiscreteSeekBar extends View {
         setFocusable(true);
         setWillNotDraw(false);
 
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+//        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        mTouchSlop = -1;
         float density = context.getResources().getDisplayMetrics().density;
         mTrackHeight = (int) (1 * density);
         mScrubberHeight = (int) (4 * density);
@@ -199,6 +200,7 @@ public class DiscreteSeekBar extends View {
         int indexMax = R.styleable.DiscreteSeekBar_dsb_max;
         int indexMin = R.styleable.DiscreteSeekBar_dsb_min;
         int indexValue = R.styleable.DiscreteSeekBar_dsb_value;
+        int touchSlop = R.styleable.DiscreteSeekBar_dsb_touch_slop;
         final TypedValue out = new TypedValue();
         //Not sure why, but we wanted to be able to use dimensions here...
         if (a.getValue(indexMax, out)) {
@@ -220,6 +222,11 @@ public class DiscreteSeekBar extends View {
                 value = a.getDimensionPixelSize(indexValue, value);
             } else {
                 value = a.getInteger(indexValue, value);
+            }
+        }
+        if (a.getValue(touchSlop, out)) {
+            if (out.type == TypedValue.TYPE_DIMENSION) {
+                mTouchSlop = a.getDimensionPixelSize(touchSlop, (int) mTouchSlop);
             }
         }
 
@@ -370,6 +377,14 @@ public class DiscreteSeekBar extends View {
 
     public int getMin() {
         return mMin;
+    }
+
+    public float getTouchSlop() {
+        return mTouchSlop;
+    }
+
+    public void setTouchSlop(float mTouchSlop) {
+        this.mTouchSlop = mTouchSlop;
     }
 
     /**
